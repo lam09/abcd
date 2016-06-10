@@ -1,0 +1,88 @@
+CC=gcc
+
+CFLAGS=-pedantic -Wall -O2 -DX10_LINUX_BUILD -std=gnu99
+
+X10INC=-I../include
+X10LIB=	../lib/libxlinecapi_x64.so \
+	-pthread \
+	../lib/unlockioc_x64.o \
+	obj/linuxkb.o \
+	obj/xlineauthenticate.o \
+	obj/xlinecexit.o
+
+
+all : clean binaries
+
+
+binaries : make_bins
+
+
+clean : FORCE
+	rm -f obj/cctalkdemo.o
+	rm -f obj/eepromdemo.o
+	rm -f obj/fadedemo.o
+	rm -f obj/inpmuxdemo.o
+	rm -f obj/iodemo.o
+	rm -f obj/paralleldemo.o
+	rm -f obj/randomdemo.o
+	rm -f obj/reels.o
+	rm -f obj/sasdemo.o
+	rm -f obj/serialdemo.o
+	rm -f obj/spidemo.o
+	rm -f obj/sramdemo.o
+	rm -f obj/timedemo.o
+	rm -f obj/linuxkb.o
+	rm -f obj/xlinecexit.o
+	rm -f obj/xlineauthenticate.o
+	rm -f cctalkdemo
+	rm -f eepromdemo
+	rm -f fadedemo
+	rm -f inpmuxdemo
+	rm -f iodemo
+	rm -f paralleldemo
+	rm -f randomdemo
+	rm -f reels
+	rm -f sasdemo
+	rm -f serialdemo
+	rm -f spidemo
+	rm -f sramdemo
+	rm -f timedemo
+
+
+make_bins : make_objs
+	$(CC) $(CFLAGS_COMMON) obj/cctalkdemo.o   -o cctalkdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/eepromdemo.o   -o eepromdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/fadedemo.o     -o fadedemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/inpmuxdemo.o   -o inpmuxdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/iodemo.o       -o iodemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/paralleldemo.o -o paralleldemo	$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/randomdemo.o   -o randomdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/reels.o        -o reels		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/sasdemo.o      -o sasdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/serialdemo.o   -o serialdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/spidemo.o      -o spidemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/sramdemo.o     -o sramdemo		$(X10LIB) 
+	$(CC) $(CFLAGS_COMMON) obj/timedemo.o     -o timedemo		$(X10LIB) 
+
+
+make_objs : FORCE
+	$(CC) $(CFLAGS) $(X10INC) -c cctalkdemo.c         -o obj/cctalkdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c eepromdemo.c         -o obj/eepromdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c fadedemo.c           -o obj/fadedemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c inpmuxdemo.c         -o obj/inpmuxdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c iodemo.c             -o obj/iodemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c paralleldemo.c       -o obj/paralleldemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c randomdemo.c         -o obj/randomdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c reels.c              -o obj/reels.o
+	$(CC) $(CFLAGS) $(X10INC) -c sasdemo.c            -o obj/sasdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c serialdemo.c         -o obj/serialdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c spidemo.c            -o obj/spidemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c sramdemo.c           -o obj/sramdemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c timedemo.c           -o obj/timedemo.o
+	$(CC) $(CFLAGS) $(X10INC) -c linuxkb.c            -o obj/linuxkb.o
+	$(CC) $(CFLAGS) $(X10INC) -c xlineauthenticate.c  -o obj/xlineauthenticate.o
+	$(CC) $(CFLAGS) $(X10INC) -c xlinecexit.c         -o obj/xlinecexit.o
+
+	
+FORCE:
+

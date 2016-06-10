@@ -1,0 +1,79 @@
+X-line LINUX KERNEL DRIVER NOTES
+================================
+This document covers both 32-bit and 64-bit versions of the device driver. 
+
+On some Linux distributions (eg. Ubuntu) many of the commands listed
+below will need to be preceeded by the 'sudo' command.
+
+This driver supports the following Xline boards:
+
+- X10
+- X10i
+- X15
+- XSpin
+- XLuminate
+- XTopper
+
+
+To compile a module for Linux under version 2.6, and later a full set of 
+installed/configured kernel source files or a "source file header package" 
+exactly matching your running kernel is needed. This Makefile only 
+functions if it called through the kernel module build process.
+
+
+To build the driver issue the following command from the driver directory:
+
+	make -C /usr/src/linux SUBDIRS=`pwd` modules
+
+	
+If your target kernel source isn't in '/usr/src/linux' then the path will 
+need changing.
+
+When you are compiling on the target machine:
+
+	make -C /usr/src/linux SUBDIRS=`pwd` modules_install
+
+will copy the newly built xline.ko to the correct place under the 
+/lib/modules directory. This process also automatically runs 'depmod' so Linux 
+will know where to find the driver. Otherwise to install into the target 
+filesystem mounted on the development machine run:
+
+	make -C /usr/src/linux SUBDIRS=`pwd` INSTALL_MOD_PATH=/mnt/target-rootfs/ modules_install
+
+
+The module can then be loaded on the target machine either by issuing the command:
+
+	modprobe xline
+or:
+
+	insmod path to file/xline
+
+Once the driver is loaded and a board plugged in, the board will appear under 
+the '/dev' directory as '/dev/Xline_0' or '/dev/Xline_1', etc. depending on how 
+many Xline boards are plugged in at the time.
+
+To remove the driver:
+
+	rmmod xline
+
+
+Device Permissions:
+New devices added under '/dev' directory are generally only available to the root user. 
+To make the Xline device node available to everyone (rather than by 'root' user 
+only), add the following rule to the udev rules file, typically: 
+/etc/udev/rules.d/50-udev.rules:
+
+KERNEL=="Xline_?",SUBSYSTEM=="Xline",MODE="666" 
+ 
+Save the file changes, then disconnect and reconnect the XLine board for the changes 
+to take effect. 
+ 
+‘50-udev.rules’ is a file intended for generic udev rules; note that the first two 
+terms in the rule use double-equals (==) and the third term is a value assignment 
+with single-equals (=); 666 grants Read/Write access to: 
+Owner, Group and Global. 
+
+If you wish to specify a group you can add ,GROUP="my_group_name" to the line. 
+
+
+
